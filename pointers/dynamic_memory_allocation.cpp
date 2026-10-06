@@ -25,7 +25,7 @@ int main(){
         std::cout << "arr[" << i << "] = " << arr[i] << '\n';
     }
 
-    delete arr;
+    delete[] arr;
     arr = nullptr
     return 0;
 }
