@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+
 int main(){
     int rows;
     int cols;
@@ -19,27 +19,30 @@ int main(){
     }
     std::cout << '\n';
 
-    std::vector<int*> matrix(rows);
+    int** matrix = new int*[rows];
 
     int count = 1;
-    for(int r = 0; r < rows; r++){
-        matrix[r] = new int[cols];
+    for(int i = 0; i < rows; i++){
+        matrix[i] = new int[cols];
         for(int c = 0; c < cols; c++){
-            matrix[r][c] = count++;
+            matrix[i][c] = count++;
         }
     }
-
     for(int r = 0; r < rows; r++){
         for(int c = 0; c < cols; c++){
-            std::cout << matrix[r][c] << " ";
+            std::cout << matrix[r][c] << ' ';
         }
         std::cout << '\n';
     }
 
-
-    for(int r = 0; r < rows; r++){
-        delete[] matrix[r];
+    for(int i = 0; i < rows; i++){
+        delete[] matrix[i];
+        matrix[i] = nullptr;
     }
+
+    delete[] matrix;
+    matrix = nullptr;
+
     return 0;
 }
 
