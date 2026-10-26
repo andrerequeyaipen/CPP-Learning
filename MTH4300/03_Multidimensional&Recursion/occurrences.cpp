@@ -4,8 +4,8 @@ int count_occurrences(int arr[], int size, int target);
 
 int main(){
     int arr[] = {2, 5, 2, 8, 2, 7, 5, 2, 10, 7, 5};
-    int size = 6;
-    std::cout << count_occurrences(arr, size, 2) << std::endl;
+    int size = 11;
+    std::cout << count_occurrences(arr, size, 5) << std::endl;
 
     return 0;
 }

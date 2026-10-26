@@ -26,7 +26,8 @@ int main(){
     }
 
     delete[] arr;
-    arr = nullptr
+    arr = nullptr;
+
     return 0;
 }
 
