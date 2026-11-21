@@ -4,7 +4,7 @@ using namespace std;
 
 class Matrix33{
     private:
-        int** matrix;
+        int** matrix = nullptr;
     public:
         Matrix33(){}
 
@@ -33,10 +33,12 @@ class Matrix33{
         //copy assignment operator
         Matrix33& operator=(const Matrix33& other){
             if(this != &other){             //"this" memory address on the left side != memory address of the right side.
-                for(int i = 0; i < 3; i++){             //deleting old pointers + data == Deallocating memory.
-                    delete[] matrix[i];
+                    if(matrix != nullptr){
+                        for(int i = 0; i < 3; i++){             //deleting old pointers + data == Deallocating memory.
+                            delete[] matrix[i];
+                    }
+                    delete[] matrix;
                 }
-                delete[] matrix;
                 matrix = new int*[3];                   //allocating new memory
                 for(int i = 0; i < 3; i++){
                     matrix[i] = new int[3];
@@ -55,12 +57,15 @@ class Matrix33{
         }
 
         //move assignment
-        Matrix33& operator=(Matrix33&& other){
+        Matrix33& operator=(Matrix33&& other) noexcept{
             if(this != &other){
-                for(int i = 0; i < 3; i++){ 
-                    delete[] matrix[i];
-                }
+                if(matrix != nullptr){
+                    for(int i = 0; i < 3; i++){ 
+                        delete[] matrix[i];
+                    }
                 delete[] matrix;
+                }
+                
                 matrix = other.matrix;
                 other.matrix = nullptr;
             }
@@ -69,6 +74,12 @@ class Matrix33{
 
         Matrix33 operator*(const Matrix33& rhs) const{
             Matrix33 result;
+
+            result.matrix = new int*[3];
+            for(int i = 0; i < 3; i++){
+                result.matrix[i] = new int[3];
+            }
+
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j < 3; j++){
                     result.matrix[i][j] = 0;
@@ -82,6 +93,12 @@ class Matrix33{
 
         Matrix33 operator*(const int& scalar) const{
             Matrix33 result;
+
+            result.matrix = new int*[3];
+            for(int i = 0; i < 3; i++){
+                result.matrix[i] = new int[3];
+            }
+
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j < 3; j++){
                     result.matrix[i][j] = scalar * this->matrix[i][j];
@@ -90,12 +107,17 @@ class Matrix33{
             return result;
         }
         
+        friend Matrix33 operator*(const int& scalar, const Matrix33& rhs){
+            return rhs * scalar;
+        }
+
         Matrix33 operator+(const Matrix33& rhs) const{
             Matrix33 result;
             result.matrix = new int*[3];
             for(int i = 0; i < 3; i++){
                 result.matrix[i] = new int[3];
             }
+
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j < 3; j++){
                     result.matrix[i][j] = this->matrix[i][j] + rhs.matrix[i][j];
@@ -116,6 +138,13 @@ class Matrix33{
 
         friend istream& operator>>(istream& is, Matrix33& rhs){
             cout << "Please enter number for the matrix: \n";
+            if(rhs.matrix == nullptr){
+                rhs.matrix = new int*[3];
+                for(int i = 0; i < 3; i++){
+                    rhs.matrix[i] = new int[3];
+                }
+            }
+            
             for(int r = 0; r < 3; r++){
                 for(int c = 0; c < 3; c++){
                     is >> rhs.matrix[r][c];
@@ -124,7 +153,7 @@ class Matrix33{
             return is;
         }
 
-        int determinant() const{
+        int determinant() const{   //Sarrus rule for 3 x 3 matrix determinant
             int downward_sum = 0;
             int upward_sum = 0;
             int determinant = 0;
@@ -145,9 +174,11 @@ class Matrix33{
 
         //Destructor
         ~Matrix33(){
-            for(int i = 0; i < 3; i++){ 
+            if(matrix != nullptr){
+                for(int i = 0; i < 3; i++){ 
                     delete[] matrix[i];
                 }
                 delete[] matrix;
+            }
         }
 };
