@@ -33,10 +33,10 @@ class Matrix33{
         //copy assignment operator
         Matrix33& operator=(const Matrix33& other){
             if(this != &other){             //"this" memory address on the left side != memory address of the right side.
-                    if(matrix != nullptr){
-                        for(int i = 0; i < 3; i++){             //deleting old pointers + data == Deallocating memory.
-                            delete[] matrix[i];
-                    }
+                if(this -> matrix != nullptr){
+                    for(int i = 0; i < 3; i++){             //deleting old pointers + data == Deallocating memory.
+                        delete[] matrix[i];
+                        }
                     delete[] matrix;
                 }
                 matrix = new int*[3];                   //allocating new memory
