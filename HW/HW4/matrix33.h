@@ -26,6 +26,8 @@ class Matrix33{
         friend std::istream& operator>>(std::istream& is, Matrix33& rhs);
 
         int determinant() const;
+        int& operator()(int row, int col);
+        const int& operator()(int row, int col) const;
 };
 
 #endif

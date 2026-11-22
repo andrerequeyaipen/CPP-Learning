@@ -169,6 +169,14 @@ int Matrix33::determinant() const{   //Sarrus rule for 3 x 3 matrix determinant
     return determinant;
 }
 
+int& Matrix33::operator()(int row, int col){
+    return matrix[row][col];
+}
+
+const int& Matrix33::operator()(int row, int col) const{
+    return matrix[row][col];
+}
+
 //Destructor
 Matrix33::~Matrix33(){
     if(matrix != nullptr){
